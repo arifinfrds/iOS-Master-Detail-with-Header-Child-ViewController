@@ -1,0 +1,6 @@
+framework module Pods_Master_Detail_with_Header_Child_ViewController {
+  umbrella header "Pods-Master Detail with Header Child ViewController-umbrella.h"
+
+  export *
+  module * { export * }
+}
