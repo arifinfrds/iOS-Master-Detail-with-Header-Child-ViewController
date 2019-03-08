@@ -18,11 +18,14 @@ class MasterViewController: UIViewController {
     
     fileprivate let cellId = "cellId"
     
-    fileprivate let items = ["Hello world", "Adam", "SnapKit", "The Power of Habit", "Snake", "Heire", "The Popeye", "Adi"]
+    fileprivate var items = ["Hello world", "Adam", "SnapKit", "The Power of Habit", "Snake", "Heire", "The Popeye", "Adi"]
     fileprivate var foundItems = [String]()
     
     fileprivate var resultsController: UITableViewController?
     fileprivate var searchController = UISearchController(searchResultsController: nil)
+    
+    fileprivate var refreshControl = UIRefreshControl()
+    
     
     override func viewDidLoad() {
         super.viewDidLoad()
@@ -44,6 +47,7 @@ class MasterViewController: UIViewController {
         }
         tableView.dataSource = self
         tableView.delegate = self
+        setupRefreshControl()
     }
     
     fileprivate func setupCell() {
@@ -76,6 +80,19 @@ class MasterViewController: UIViewController {
         present(searchController, animated: true, completion: nil)
         
         definesPresentationContext = true
+    }
+    
+    fileprivate func setupRefreshControl() {
+        refreshControl.attributedTitle = NSAttributedString(string: "Pull to refresh")
+        refreshControl.addTarget(self, action: #selector(refresh), for: .valueChanged)
+        tableView.addSubview(refreshControl)
+    }
+    
+    @objc fileprivate func refresh() {
+        let newItem = RandomStringGenerator.randomString(length: 8)
+        items.append(newItem)
+        refreshControl.endRefreshing()
+        tableView.reloadData()
     }
 }
 
